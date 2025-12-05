@@ -1,3 +1,8 @@
+variable "acme_server_url" {
+  description = "acme server url to use"
+  type        = string
+}
+
 variable "region" {
   description = "AWS region to deploy resources in"
   type        = string
@@ -20,6 +25,11 @@ variable "hosted_zone_name" {
 
 variable "dns_record" {
   description = "DNS record"
+  type        = string
+}
+
+variable "email" {
+  description = "email used in acme cert and tfe admin user"
   type        = string
 }
 

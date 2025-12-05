@@ -133,7 +133,7 @@ write_files:
     content: |
       {
         "username": "admin",
-        "email": "admin@admin.com",
+        "email": "${email}",
         "password": "${tfe_encryption_password}"
       }
 
@@ -160,7 +160,7 @@ write_files:
       if [ ! -e "$FILE" ] || [ ! -s "$FILE" ]; then
         echo info: generating admin token $FILE
         URL="https://${tfe_hostname}/admin/initial-admin-user?token=$(cat iact.token)"
-        curl -kL --globoff --header "Content-Type: application/json" --request POST --data @/tmp/payload.json "${URL}"  | jq -r '.token' | tee admin.token
+        curl -kL --globoff --header "Content-Type: application/json" --request POST --data @/tmp/payload.json "$${URL}"  | jq -r '.token' | tee admin.token
       fi
 
       popd
@@ -193,6 +193,7 @@ write_files:
 
 runcmd:
   - mkdir -p /etc/terraform-enterprise/certs
-  - chmod 700 /etc/tfe/certs
-  - mkdir -p "${data_dir}"
-  - [ bash, -c, "/usr/local/bin/tfe-bootstrap.sh" ]
+  - chmod 700 /etc/terraform-enterprise/certs
+  - mkdir -p ${data_dir}
+  - bash /usr/local/bin/tfe-bootstrap.sh
+  - bash /usr/local/bin/tfe-admin-user.sh

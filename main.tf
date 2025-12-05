@@ -20,7 +20,8 @@ provider "aws" {
 }
 
 provider "acme" {
-  server_url = "https://acme-staging-v02.api.letsencrypt.org/directory"
+  # https://letsencrypt.org/docs/acme-protocol-updates/#acme-v2-rfc-8555
+  server_url = var.acme_server_url
 }
 
 # --- Data Sources to capture the latest Ubuntu AMI ---
@@ -126,6 +127,7 @@ resource "aws_instance" "this" {
     server_cert             = indent(6, acme_certificate.server.certificate_pem)
     private_key             = indent(6, acme_certificate.server.private_key_pem)
     bundle_certs            = indent(6, acme_certificate.server.issuer_pem)
+    email                   = var.email
     tfe_license             = var.tfe_license
     tfe_hostname            = var.dns_record
     tfe_admin_password      = var.tfe_admin_password
@@ -163,7 +165,7 @@ resource "tls_private_key" "acme_account" {
 # ACME registration (your Let's Encrypt account)
 resource "acme_registration" "this" {
   account_key_pem = tls_private_key.acme_account.private_key_pem
-  email_address   = "mohamed.abdelbaset@hashicorp.com"
+  email_address   = var.email
 }
 
 # ACME certificate for your FQDN
