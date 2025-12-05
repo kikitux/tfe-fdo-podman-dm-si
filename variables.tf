@@ -1,41 +1,52 @@
 variable "region" {
-  type    = string
-  default = "eu-west-1"
+  description = "AWS region to deploy resources in"
+  type        = string
 }
 
 variable "name" {
-  type    = string
-  default = "my-vm"
+  description = "Name for the EC2 instance"
+  type        = string
 }
 
 variable "instance_type" {
-  type    = string
-  default = "t2.large"
+  description = "EC2 instance type"
+  type        = string
 }
 
 variable "hosted_zone_name" {
-  type    = string
-  default = "mohamed-abdelbaset.sbx.hashidemos.io"
+  description = "Route53 Hosted Zone Name"
+  type        = string
 }
 
 variable "dns_record" {
-  type = string
-  default = "server.mohamed-abdelbaset.sbx.hashidemos.io"
+  description = "DNS record"
+  type        = string
 }
 
 variable "tfe_license" {
-  type = string
+  description = "Terraform Enterprise License"
+  type        = string
+  sensitive   = true
 }
 
 variable "tfe_encryption_password" {
   description = "Password used to encrypt TFE data."
   type        = string
+  sensitive   = true
 }
 
 variable "tfe_image_tag" {
-  type = string
-  # example default:
-  # default = "v202411-1"
+  type        = string
+  description = "TFE image version to install"
 }
 
+variable "s3_bucket_name" {
+  type        = string
+  description = "The name of the S3 bucket"
+}
 
+variable "rds_password" {
+  type        = string
+  description = "The password for the RDS instance"
+  sensitive   = true
+}
